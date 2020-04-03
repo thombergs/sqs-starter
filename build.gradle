@@ -1,6 +1,13 @@
 plugins {
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
+    id "com.jfrog.bintray" version "1.8.1"
+}
+
+ext{
+    bintrayUser = System.getProperty("bintray.user")
+    bintrayKey = System.getProperty("bintray.key")
+    buildNumber = System.getProperty("build.number")
 }
 
 subprojects {
@@ -10,8 +17,7 @@ subprojects {
     apply plugin: 'java-library'
     apply plugin: 'jacoco'
 
-    group = 'io.blogtrack'
-    version = '0.0.1-SNAPSHOT'
+    version = '0.0.1'
     sourceCompatibility = '8'
 
     repositories {
@@ -42,6 +48,22 @@ subprojects {
         annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     }
 
+    ask sourcesJar(type: Jar, dependsOn: classes) {
+        classifier = 'sources'
+        from sourceSets.main.allSource
+    }
+
+    javadoc.failOnError = false
+    task javadocJar(type: Jar, dependsOn: javadoc) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+
+    artifacts {
+        archives sourcesJar
+        archives javadocJar
+    }
+
     test {
         useJUnitPlatform {
         }
@@ -50,5 +72,72 @@ subprojects {
     }
 
     test.finalizedBy jacocoTestReport
+
+    def pomConfig = {
+        licenses {
+            license {
+                name "MIT"
+                url "https://opensource.org/licenses/MIT"
+                distribution "repo"
+            }
+        }
+        developers {
+            developer {
+                id "thombergs"
+                name "Tom Hombergs"
+                email "tom.hombergs@gmail.com"
+            }
+        }
+
+        scm {
+            url "https://github.com/thombergs/sqs-starter"
+        }
+    }
+
+    publishing {
+        publications {
+            mavenPublication(MavenPublication) {
+                from components.java
+                artifact sourcesJar {
+                    classifier "sources"
+                }
+                artifact javadocJar {
+                    classifier "javadoc"
+                }
+                groupId 'io.reflectoring'
+                artifactId 'sqs-starter'
+                version project.version
+                pom.withXml {
+                    def root = asNode()
+                    root.appendNode('description', 'A Spring Boot starter for robust SQS message handling and publishing.')
+                    root.appendNode('name', 'sqs-starter')
+                    root.appendNode('url', 'https://github.com/thombergs/sqs-starter')
+                    root.children().last() + pomConfig
+                }
+            }
+        }
+    }
+
+    bintray {
+        user = bintrayUser
+        key = bintrayKey
+        publications = ['mavenPublication']
+
+        pkg {
+            repo = 'maven-releases'
+            name = 'sqs-starter'
+            userOrg = 'reflectoring'
+            licenses = ['MIT']
+            vcsUrl = 'https://github.com/thombergs/sqs-starter'
+            version {
+                name = project.version
+                desc = "build ${buildNumber}"
+                released  = new Date()
+            }
+        }
+
+        publish = true
+    }
+
 
 }
