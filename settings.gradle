@@ -1,0 +1,2 @@
+include 'sqs-starter'
+include 'sqs-starter-test'

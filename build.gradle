@@ -1,0 +1,54 @@
+plugins {
+    id 'io.spring.dependency-management' version '1.0.9.RELEASE'
+    id 'java'
+}
+
+subprojects {
+
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'java-library'
+    apply plugin: 'jacoco'
+
+    group = 'io.blogtrack'
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = '8'
+
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+
+    dependencyManagement {
+        imports {
+            mavenBom("org.springframework.boot:spring-boot-dependencies:2.2.4.RELEASE")
+        }
+    }
+
+    // common dependencies for all modules
+    dependencies {
+
+        // Spring Boot's testing dependencies
+        testImplementation('org.springframework.boot:spring-boot-starter-test') {
+            exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+        }
+
+        // Lombok
+        compileOnly 'org.projectlombok:lombok'
+        testCompileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
+
+        // annotation processor to create configuration metadata
+        annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    }
+
+    test {
+        useJUnitPlatform {
+        }
+        systemProperty "aws.accessKeyId", "foo" // dummy AWS credentials because the AWS SDK complains otherwise
+        systemProperty "aws.secretKey", "foo"   // dummy AWS credentials because the AWS SDK complains otherwise
+    }
+
+    test.finalizedBy jacocoTestReport
+
+}
