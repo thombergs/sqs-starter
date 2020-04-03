@@ -48,7 +48,7 @@ subprojects {
         annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     }
 
-    ask sourcesJar(type: Jar, dependsOn: classes) {
+    task sourcesJar(type: Jar, dependsOn: classes) {
         classifier = 'sources'
         from sourceSets.main.allSource
     }
