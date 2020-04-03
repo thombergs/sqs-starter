@@ -1,7 +1,8 @@
 plugins {
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'java'
-    id "com.jfrog.bintray" version "1.8.1"
+    id 'com.jfrog.bintray' version '1.8.1'
+    id 'maven-publish'
 }
 
 ext{
@@ -16,6 +17,7 @@ subprojects {
     apply plugin: 'io.spring.dependency-management'
     apply plugin: 'java-library'
     apply plugin: 'jacoco'
+    apply plugin: 'maven-publish'
 
     version = '0.0.1'
     sourceCompatibility = '8'
