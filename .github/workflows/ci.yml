@@ -4,6 +4,14 @@ on: [push]
 
 jobs:
 
+  # Publishes to Bintray on pushes to the "release" branch.
+  publish:
+    if: github.ref == 'refs/head/release'
+    runs-on: ubuntu-latest
+    steps:
+    - name: "Hello"
+      run: echo 'RELEASING!!!'
+
   # Runs the CI build on all PRs and branches.
   build:
     runs-on: ubuntu-latest
@@ -35,12 +43,3 @@ jobs:
       with:
         name: reports
         path: reports.zip
-
-  # Publishes to Bintray on pushes to the "release" branch.
-  publish:
-    if: "github.ref == 'refs/head/release'"
-    runs-on: ubuntu-latest
-    steps:
-
-      - name: "Hello"
-        run: echo 'RELEASING!!!'
