@@ -5,6 +5,7 @@ on: [push]
 jobs:
 
   # Runs the CI build on all PRs and branches.
+  # Publishes to Bintray on pushes to the "release" branch.
   build:
     runs-on: ubuntu-latest
     steps:
@@ -39,3 +40,6 @@ jobs:
     - name: "Publish to Bintray"
       if: github.ref == 'refs/heads/release'
       run: chmod 755 gradlew && ./gradlew bintrayUpload -x test -Dbintray.user=$BINTRAY_USER -Dbintray.key=$BINTRAY_KEY -Dbuild.number=$GITHUB_SHA
+      env:
+        BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
+        BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
