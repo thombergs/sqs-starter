@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  io.blogtrack.sqs.internal.SqsAutoConfiguration
+  io.reflectoring.sqs.internal.SqsAutoConfiguration

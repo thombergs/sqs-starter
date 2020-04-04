@@ -10,7 +10,7 @@
     <appender-ref ref="STDOUT" />
   </root>
 
-  <logger name="io.blogtrack" level="DEBUG"/>
+  <logger name="io.reflectoring" level="DEBUG"/>
 
   <!-- set to DEBUG to show AWS traffic -->
   <logger name="org.apache.http.wire" level="INFO"/>
