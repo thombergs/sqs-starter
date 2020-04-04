@@ -38,5 +38,4 @@ jobs:
 
     - name: "Publish to Bintray"
       if: github.ref == 'refs/heads/release'
-      runs-on: ubuntu-latest
       run: chmod 755 gradlew && ./gradlew bintrayUpload -x test -Dbintray.user=$BINTRAY_USER -Dbintray.key=$BINTRAY_KEY -Dbuild.number=$GITHUB_SHA
