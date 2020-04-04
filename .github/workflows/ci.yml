@@ -6,7 +6,7 @@ jobs:
 
   # Publishes to Bintray on pushes to the "release" branch.
   publish:
-    if: github.ref == 'refs/head/release'
+    if: github.ref == 'refs/heads/release'
     runs-on: ubuntu-latest
     steps:
     - name: "Hello"
