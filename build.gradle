@@ -108,7 +108,7 @@ subprojects {
                     classifier "javadoc"
                 }
                 groupId 'io.reflectoring'
-                artifactId 'sqs-starter'
+                artifactId project.name
                 version project.version
                 pom.withXml {
                     def root = asNode()
