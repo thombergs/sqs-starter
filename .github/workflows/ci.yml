@@ -18,7 +18,7 @@ jobs:
         java-version: 13
 
     - name: "Run Gradle build"
-      run: chmod 755 gradlew && ./gradlew build
+      run: chmod 755 gradlew && ./gradlew build -x test
       env:
         # We don't actually need AWS credentials in the tests, but the AWS SDK
         # complains if they're not there, so we add dummies to the environment.
