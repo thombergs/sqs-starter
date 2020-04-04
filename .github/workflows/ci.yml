@@ -29,17 +29,14 @@ jobs:
       if: failure()
       run: zip -r reports.zip **/**/build/reports
 
-    - uses: actions/upload-artifact@v1
-      name: "Upload build reports"
+    - name: "Upload build reports"
+      uses: actions/upload-artifact@v1
       if: failure()
       with:
         name: reports
         path: reports.zip
 
-  # Publishes to Bintray on pushes to the "release" branch.
-  publish:
-    if: github.ref == 'refs/heads/release'
-    runs-on: ubuntu-latest
-    steps:
-      - name: "Hello"
-        run: chmod 755 gradlew && ./gradlew bintrayUpload -x test -Dbintray.user=$BINTRAY_USER -Dbintray.key=$BINTRAY_KEY -Dbuild.number=$GITHUB_SHA
+    - name: "Publish to Bintray"
+      if: github.ref == 'refs/heads/release'
+      runs-on: ubuntu-latest
+      run: chmod 755 gradlew && ./gradlew bintrayUpload -x test -Dbintray.user=$BINTRAY_USER -Dbintray.key=$BINTRAY_KEY -Dbuild.number=$GITHUB_SHA
