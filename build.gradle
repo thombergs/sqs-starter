@@ -18,6 +18,7 @@ subprojects {
     apply plugin: 'java-library'
     apply plugin: 'jacoco'
     apply plugin: 'maven-publish'
+    apply plugin: 'com.jfrog.bintray'
 
     version = '0.0.1'
     sourceCompatibility = '8'
