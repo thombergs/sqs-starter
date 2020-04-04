@@ -65,6 +65,8 @@ class TestMessageHandler implements SqsMessageHandler<TestMessage> {
 }
 ```
 
+**The message handler must be thread-safe!** It will be called by multiple threads in parallel!
+
 Then, register a bean of type `SqsMessageHandlerRegistration` in the Spring application context:
 
 ```java
