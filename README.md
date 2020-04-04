@@ -3,7 +3,7 @@
 # sqs-starter
 A Spring Boot starter to send and consume messages to / from an AWS SQS queue in a robust manner.
 
-Note that this library *has not been battle-tested in production, yet* (at least not by me).
+Note that this library **has not been battle-tested in production, yet** (at least not by me).
 
 * [Installation](#installation)
 * [Publishing Messages to SQS](#publishing-messages-to-sqs)
