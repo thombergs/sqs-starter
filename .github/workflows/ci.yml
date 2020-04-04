@@ -4,14 +4,6 @@ on: [push]
 
 jobs:
 
-  # Publishes to Bintray on pushes to the "release" branch.
-  publish:
-    if: github.ref == 'refs/heads/release'
-    runs-on: ubuntu-latest
-    steps:
-    - name: "Hello"
-      run: echo 'RELEASING!!!'
-
   # Runs the CI build on all PRs and branches.
   build:
     runs-on: ubuntu-latest
@@ -43,3 +35,11 @@ jobs:
       with:
         name: reports
         path: reports.zip
+
+  # Publishes to Bintray on pushes to the "release" branch.
+  publish:
+    if: github.ref == 'refs/heads/release'
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Hello"
+        run: chmod 755 gradlew && ./gradlew bintrayUpload -x test -Dbintray.user=$BINTRAY_USER -Dbintray.key=$BINTRAY_KEY -Dbuild.number=$GITHUB_SHA
