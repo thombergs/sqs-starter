@@ -36,7 +36,7 @@ TestMessagePublisher messagePublisher = new TestMessagePublisher(...);
 messagePublisher.publish(new TestMessage("this is a test message"));
 ```
 
-The publisher will *automatically retry* up to 3 times with a short exponential backoff if SQS returns an error. You can also pass your own [RetryRegistry](https://github.com/resilience4j/resilience4j/blob/master/resilience4j-retry/src/main/java/io/github/resilience4j/retry/RetryRegistry.java) into the constructor to customize the retry behavior.
+The publisher will **automatically retry** up to 3 times with a short exponential backoff if SQS returns an error. You can also pass your own [RetryRegistry](https://github.com/resilience4j/resilience4j/blob/master/resilience4j-retry/src/main/java/io/github/resilience4j/retry/RetryRegistry.java) into the constructor to customize the retry behavior.
 
 ## Consuming Messages from SQS
 
@@ -45,7 +45,7 @@ For consuming messages, the SQS starter lets you configure:
 * a message poller, which polls messages from SQS at a regular interval, and
 * a thread pool of message handlers, which process the messages received by the poller.
 
-*The starter assumes that all messages from an SQS queue are handled by the same message handler.*
+**The starter assumes that all messages from an SQS queue are handled by the same message handler.**
 
 First, implement the `SqsMessageHandler` interface:
 
