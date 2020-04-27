@@ -6,13 +6,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.reflectoring.sqs.api.SqsMessageHandler;
 import io.reflectoring.sqs.api.SqsMessagePollerProperties;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.List;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Polls messages from an SQS queue in potentially multiple threads at regular intervals.
@@ -57,11 +58,16 @@ class SqsMessagePoller<T> {
       try {
         final T message = objectMapper.readValue(sqsMessage.getBody(), messageHandler.messageType());
         handlerThreadPool.submit(() -> {
-          messageHandler.handle(message);
-          acknowledgeMessage(sqsMessage);
+          try{
+            messageHandler.handle(message);
+            acknowledgeMessage(sqsMessage);
+          } catch (Exception e) {
+            logger.warn("error while processing message {} - message will be retried according to SQS properties:", sqsMessage.getMessageId(), e);
+          }
+          logger.debug("message {} processed successfully - message has been deleted from SQS", sqsMessage.getMessageId());
         });
       } catch (JsonProcessingException e) {
-        logger.warn("error parsing message: ", e);
+        logger.warn("error parsing message {} - deleting message from SQS because it's not recoverable: ", sqsMessage.getMessageId(), e);
       }
 
       // we let other exceptions bubble up to trigger a retry
