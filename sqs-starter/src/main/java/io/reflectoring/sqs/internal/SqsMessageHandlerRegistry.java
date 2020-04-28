@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 
-class SqsMessageHandlerRegistry implements ApplicationListener<ApplicationReadyEvent> {
+class SqsMessageHandlerRegistry {
 
     private static final Logger logger = LoggerFactory.getLogger(SqsMessageHandlerRegistry.class);
 
@@ -34,11 +34,18 @@ class SqsMessageHandlerRegistry implements ApplicationListener<ApplicationReadyE
     private SqsMessagePoller<?> createPollerForHandler(SqsMessageHandlerRegistration<?> registration) {
         return new SqsMessagePoller<>(
                 registration.messageHandler(),
+                createFetcherForHandler(registration),
                 registration.messagePollerProperties(),
                 registration.sqsClient(),
                 registration.objectMapper(),
                 createPollingThreadPool(registration),
                 createHandlerThreadPool(registration));
+    }
+
+    private SqsMessageFetcher createFetcherForHandler(SqsMessageHandlerRegistration<?> registration){
+        return new SqsMessageFetcher(
+            registration.sqsClient(),
+            registration.messagePollerProperties());
     }
 
     private ScheduledThreadPoolExecutor createPollingThreadPool(SqsMessageHandlerRegistration<?> registration) {
@@ -54,14 +61,12 @@ class SqsMessageHandlerRegistry implements ApplicationListener<ApplicationReadyE
                 String.format("%s-handler", registration.name()));
     }
 
-    @Override
-    public void onApplicationEvent(ApplicationReadyEvent applicationReadyEvent) {
+    public void start() {
         for (SqsMessagePoller<?> poller : this.pollers) {
             poller.start();
         }
     }
 
-    @PreDestroy
     public void stop() {
         for (SqsMessagePoller<?> poller : this.pollers) {
             poller.stop();

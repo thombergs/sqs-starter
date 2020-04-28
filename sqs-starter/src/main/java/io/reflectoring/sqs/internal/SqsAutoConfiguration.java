@@ -9,10 +9,13 @@ import org.springframework.context.annotation.Configuration;
 class SqsAutoConfiguration {
 
   @Bean
-  SqsMessageHandlerRegistry sqsMessageHandlerRegistry(List<SqsMessageHandlerRegistration<?>> registrations){
+  SqsMessageHandlerRegistry sqsMessageHandlerRegistry(List<SqsMessageHandlerRegistration<?>> registrations) {
     return new SqsMessageHandlerRegistry(registrations);
   }
 
-
+  @Bean
+  SqsAutoConfigurationLifecycle sqsLifecycle(SqsMessageHandlerRegistry registry) {
+    return new SqsAutoConfigurationLifecycle(registry);
+  }
 
 }
