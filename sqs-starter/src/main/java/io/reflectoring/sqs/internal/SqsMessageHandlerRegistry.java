@@ -1,16 +1,14 @@
 package io.reflectoring.sqs.internal;
 
 import io.reflectoring.sqs.api.SqsMessageHandlerRegistration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadPoolExecutor;
-import javax.annotation.PreDestroy;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.boot.context.event.ApplicationReadyEvent;
-import org.springframework.context.ApplicationListener;
 
 class SqsMessageHandlerRegistry {
 
@@ -33,6 +31,7 @@ class SqsMessageHandlerRegistry {
 
     private SqsMessagePoller<?> createPollerForHandler(SqsMessageHandlerRegistration<?> registration) {
         return new SqsMessagePoller<>(
+                registration.name(),
                 registration.messageHandler(),
                 createFetcherForHandler(registration),
                 registration.messagePollerProperties(),
@@ -42,10 +41,10 @@ class SqsMessageHandlerRegistry {
                 createHandlerThreadPool(registration));
     }
 
-    private SqsMessageFetcher createFetcherForHandler(SqsMessageHandlerRegistration<?> registration){
+    private SqsMessageFetcher createFetcherForHandler(SqsMessageHandlerRegistration<?> registration) {
         return new SqsMessageFetcher(
-            registration.sqsClient(),
-            registration.messagePollerProperties());
+                registration.sqsClient(),
+                registration.messagePollerProperties());
     }
 
     private ScheduledThreadPoolExecutor createPollingThreadPool(SqsMessageHandlerRegistration<?> registration) {

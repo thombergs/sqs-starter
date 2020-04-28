@@ -24,6 +24,7 @@ import java.util.concurrent.TimeUnit;
 class SqsMessagePoller<T> {
 
   private static final Logger logger = LoggerFactory.getLogger(SqsMessagePoller.class);
+  private final String name;
   private final SqsMessageHandler<T> messageHandler;
   private final SqsMessageFetcher messageFetcher;
   private final SqsMessagePollerProperties pollingProperties;
@@ -35,7 +36,7 @@ class SqsMessagePoller<T> {
   void start() {
     logger.info("starting SqsMessagePoller");
     for (int i = 0; i < pollerThreadPool.getCorePoolSize(); i++) {
-      logger.info("starting SqsMessagePoller - thread {}", i);
+      logger.info("starting SqsMessagePoller ({}) - thread {}", this.name, i);
       pollerThreadPool.scheduleWithFixedDelay(
           this::poll,
           1,
