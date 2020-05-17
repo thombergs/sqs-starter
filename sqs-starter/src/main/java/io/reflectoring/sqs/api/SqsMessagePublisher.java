@@ -50,16 +50,32 @@ public abstract class SqsMessagePublisher<T> {
     }
 
     public void publish(T message) {
+        publish(message, new SendMessageRequest());
+    }
+
+    /**
+     * Publishes a message with a pre-configured {@link SendMessageRequest} which gives you all the options you may need
+     * from the underlying SQS client. Note that the `queueUrl` and `messageBody` must not be set because they will be set
+     * by the this publisher.
+     */
+    public void publish(T message, SendMessageRequest preConfiguredRequest) {
+        if (preConfiguredRequest.getQueueUrl() != null) {
+            throw new IllegalArgumentException("attribute queueUrl of pre-configured request must not be set!");
+        }
+        if (preConfiguredRequest.getMessageBody() != null) {
+            throw new IllegalArgumentException("message body of pre-configured request must not be set!");
+        }
+
         Retry retry = retryRegistry.retry("publish");
         retry.getEventPublisher()
                 .onError(event -> logger.warn("error publishing message to queue {}", this.sqsQueueUrl));
-        retry.executeRunnable(() -> doPublish(message));
+        retry.executeRunnable(() -> doPublish(message, preConfiguredRequest));
     }
 
-    private void doPublish(T message) {
+    private void doPublish(T message, SendMessageRequest preConfiguredRequest) {
         try {
             logger.debug("sending message to SQS queue {}", sqsQueueUrl);
-            SendMessageRequest request = new SendMessageRequest()
+            SendMessageRequest request = preConfiguredRequest
                     .withQueueUrl(sqsQueueUrl)
                     .withMessageBody(objectMapper.writeValueAsString(message));
             SendMessageResult result = sqsClient.sendMessage(request);
