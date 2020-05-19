@@ -13,22 +13,38 @@ public class SqsMessagePollerProperties {
      */
     private final String queueUrl;
 
-    /**
-     * The delay the poller should wait for the next poll after the previous poll has finished.
-     */
     private Duration pollDelay = Duration.of(1, ChronoUnit.SECONDS);
 
-    /**
-     * The duration the SQS client should wait for messages before closing the connection.
-     */
     private Duration waitTime = Duration.ofSeconds(1);
 
-    /**
-     * The maximum number of messages to pull from SQS with each poll.
-     */
     private int batchSize = 10;
 
     public SqsMessagePollerProperties(String queueUrl) {
         this.queueUrl = queueUrl;
     }
+
+    /**
+     * The delay the poller should wait for the next poll after the previous poll has finished.
+     */
+    public SqsMessagePollerProperties withPollDelay(Duration pollDelay){
+        this.pollDelay = pollDelay;
+        return this;
+    }
+
+    /**
+     * The duration the SQS client should wait for messages before closing the connection.
+     */
+    public SqsMessagePollerProperties withWaitTime(Duration waitTime){
+        this.waitTime = waitTime;
+        return this;
+    }
+
+    /**
+     * The maximum number of messages to pull from SQS with each poll.
+     */
+    public SqsMessagePollerProperties withBatchSize(int batchSize){
+        this.batchSize = batchSize;
+        return this;
+    }
+
 }
