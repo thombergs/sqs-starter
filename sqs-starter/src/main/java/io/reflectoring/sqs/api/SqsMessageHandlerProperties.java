@@ -12,7 +12,7 @@ public class SqsMessageHandlerProperties {
     /**
      * The size of the thread pool of {@link SqsMessageHandler}s.
      */
-    SqsMessageHandlerProperties withHandlerThreadPoolSize(int handlerThreadPoolSize){
+    public SqsMessageHandlerProperties withHandlerThreadPoolSize(int handlerThreadPoolSize){
         this.handlerThreadPoolSize = handlerThreadPoolSize;
         return this;
     }
@@ -20,7 +20,7 @@ public class SqsMessageHandlerProperties {
     /**
      * The size of the in-memory queue of the thread pool of {@link SqsMessageHandler}s.
      */
-    SqsMessageHandlerProperties withHandlerQueueSize(int handlerQueueSize){
+    public SqsMessageHandlerProperties withHandlerQueueSize(int handlerQueueSize){
         this.handlerQueueSize = handlerQueueSize;
         return this;
     }

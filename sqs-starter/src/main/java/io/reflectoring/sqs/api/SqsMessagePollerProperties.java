@@ -26,7 +26,7 @@ public class SqsMessagePollerProperties {
     /**
      * The delay the poller should wait for the next poll after the previous poll has finished.
      */
-    SqsMessagePollerProperties withPollDelay(Duration pollDelay){
+    public SqsMessagePollerProperties withPollDelay(Duration pollDelay){
         this.pollDelay = pollDelay;
         return this;
     }
@@ -34,7 +34,7 @@ public class SqsMessagePollerProperties {
     /**
      * The duration the SQS client should wait for messages before closing the connection.
      */
-    SqsMessagePollerProperties withWaitTime(Duration waitTime){
+    public SqsMessagePollerProperties withWaitTime(Duration waitTime){
         this.waitTime = waitTime;
         return this;
     }
@@ -42,7 +42,7 @@ public class SqsMessagePollerProperties {
     /**
      * The maximum number of messages to pull from SQS with each poll.
      */
-    SqsMessagePollerProperties withBatchSize(int batchSize){
+    public SqsMessagePollerProperties withBatchSize(int batchSize){
         this.batchSize = batchSize;
         return this;
     }
