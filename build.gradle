@@ -70,6 +70,9 @@ subprojects {
 
     test {
         useJUnitPlatform {
+            if(System.getProperty("ci") != null){
+                excludeTags "IgnoreInCi"
+            }
         }
         systemProperty "aws.accessKeyId", "foo" // dummy AWS credentials because the AWS SDK complains otherwise
         systemProperty "aws.secretKey", "foo"   // dummy AWS credentials because the AWS SDK complains otherwise

@@ -2,6 +2,7 @@ package io.reflectoring.sqs.internal;
 
 import com.amazonaws.services.sqs.AmazonSQS;
 import io.reflectoring.sqs.SqsTest;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,6 +14,7 @@ import static org.awaitility.Awaitility.await;
 
 @SqsTest(queueNames = "testMessages")
 @SpringBootTest
+@Tag("IgnoreInCi")
 class SendAndReceiveIntegrationTest {
 
     @Autowired
