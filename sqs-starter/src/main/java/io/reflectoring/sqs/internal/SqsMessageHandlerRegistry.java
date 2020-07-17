@@ -38,7 +38,8 @@ class SqsMessageHandlerRegistry {
                 registration.sqsClient(),
                 registration.objectMapper(),
                 createPollingThreadPool(registration),
-                createHandlerThreadPool(registration));
+                createHandlerThreadPool(registration),
+                registration.messagePollerProperties().getExceptionHandler());
     }
 
     private SqsMessageFetcher createFetcherForHandler(SqsMessageHandlerRegistration<?> registration) {

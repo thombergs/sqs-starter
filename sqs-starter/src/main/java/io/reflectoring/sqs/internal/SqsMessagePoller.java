@@ -4,6 +4,7 @@ import com.amazonaws.services.sqs.AmazonSQS;
 import com.amazonaws.services.sqs.model.Message;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.reflectoring.sqs.api.ExceptionHandler;
 import io.reflectoring.sqs.api.SqsMessageHandler;
 import io.reflectoring.sqs.api.SqsMessagePollerProperties;
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,8 @@ class SqsMessagePoller<T> {
     private final ObjectMapper objectMapper;
     private final ScheduledThreadPoolExecutor pollerThreadPool;
     private final ThreadPoolExecutor handlerThreadPool;
+    private final ExceptionHandler exceptionHandler;
+
 
     void start() {
         logger.info("starting SqsMessagePoller");
@@ -70,7 +73,7 @@ class SqsMessagePoller<T> {
                     messageHandler.handle(message);
                     acknowledgeMessage(sqsMessage);
                 } catch (Exception e) {
-                    logger.warn("error while processing message {} - message will be retried according to SQS properties:", sqsMessage.getMessageId(), e);
+                    exceptionHandler.handleException(sqsMessage, e);
                 }
                 logger.debug("message {} processed successfully - message has been deleted from SQS", sqsMessage.getMessageId());
             });

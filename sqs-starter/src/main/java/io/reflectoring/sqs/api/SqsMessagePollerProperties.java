@@ -19,6 +19,8 @@ public class SqsMessagePollerProperties {
 
     private int batchSize = 10;
 
+    private ExceptionHandler exceptionHandler = ExceptionHandler.defaultExceptionHandler();
+
     public SqsMessagePollerProperties(String queueUrl) {
         this.queueUrl = queueUrl;
     }
@@ -26,7 +28,7 @@ public class SqsMessagePollerProperties {
     /**
      * The delay the poller should wait for the next poll after the previous poll has finished.
      */
-    public SqsMessagePollerProperties withPollDelay(Duration pollDelay){
+    public SqsMessagePollerProperties withPollDelay(Duration pollDelay) {
         this.pollDelay = pollDelay;
         return this;
     }
@@ -34,7 +36,7 @@ public class SqsMessagePollerProperties {
     /**
      * The duration the SQS client should wait for messages before closing the connection.
      */
-    public SqsMessagePollerProperties withWaitTime(Duration waitTime){
+    public SqsMessagePollerProperties withWaitTime(Duration waitTime) {
         this.waitTime = waitTime;
         return this;
     }
@@ -42,8 +44,13 @@ public class SqsMessagePollerProperties {
     /**
      * The maximum number of messages to pull from SQS with each poll.
      */
-    public SqsMessagePollerProperties withBatchSize(int batchSize){
+    public SqsMessagePollerProperties withBatchSize(int batchSize) {
         this.batchSize = batchSize;
+        return this;
+    }
+
+    public SqsMessagePollerProperties withExceptionHandler(ExceptionHandler exceptionHandler) {
+        this.exceptionHandler = exceptionHandler;
         return this;
     }
 
