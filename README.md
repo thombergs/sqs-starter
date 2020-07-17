@@ -24,7 +24,7 @@ To send messages to SQS, extend `SqsMessagePublisher`:
 class TestMessagePublisher extends SqsMessagePublisher<TestMessage> {
 
   TestMessagePublisher(AmazonSQS sqsClient, ObjectMapper objectMapper) {
-  super("http://localhost:4576/queue/testMessages", sqsClient, objectMapper);
+    super("http://localhost:4576/queue/testMessages", sqsClient, objectMapper);
   }
 
 }

@@ -27,10 +27,12 @@ jobs:
         AWS_SECRET_KEY: ${{ secrets.DUMMY_AWS_SECRET_KEY }}
 
     - name: "Zip build reports"
+      if: failure()
       run: zip -r reports.zip **/**/build/reports
 
     - name: "Upload build reports"
       uses: actions/upload-artifact@v1
+      if: failure()
       with:
         name: reports
         path: reports.zip
