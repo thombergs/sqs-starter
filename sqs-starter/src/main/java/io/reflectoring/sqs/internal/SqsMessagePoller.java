@@ -42,8 +42,8 @@ class SqsMessagePoller<T> {
             logger.info("starting SqsMessagePoller ({}) - thread {}", this.name, i);
             pollerThreadPool.scheduleWithFixedDelay(
                     this::pollMessages,
-                    pollingProperties.getPollDelay().toSeconds(),
-                    pollingProperties.getPollDelay().toSeconds(),
+                    pollingProperties.getPollDelay().getSeconds(),
+                    pollingProperties.getPollDelay().getSeconds(),
                     TimeUnit.SECONDS);
         }
     }
