@@ -28,7 +28,7 @@ class SqsMessageFetcher {
     ReceiveMessageRequest request = new ReceiveMessageRequest()
         .withMaxNumberOfMessages(properties.getBatchSize())
         .withQueueUrl(properties.getQueueUrl())
-        .withWaitTimeSeconds((int) properties.getWaitTime().toSeconds());
+        .withWaitTimeSeconds((int) properties.getWaitTime().getSeconds());
 
     ReceiveMessageResult result = sqsClient.receiveMessage(request);
 
