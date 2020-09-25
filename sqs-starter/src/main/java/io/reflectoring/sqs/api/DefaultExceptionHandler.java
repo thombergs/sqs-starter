@@ -9,7 +9,8 @@ public class DefaultExceptionHandler implements ExceptionHandler {
     private static final Logger logger = LoggerFactory.getLogger(DefaultExceptionHandler.class);
 
     @Override
-    public void handleException(Message message, Exception e) {
-        logger.warn("error while processing message {} - message will be retried according to SQS properties:", message.getMessageId(), e);
+    public ExceptionHandlerDecision handleException(Message message, Exception e) {
+        logger.warn("error while processing message {} - message has not been deleted from SQS and will be retried:", message.getMessageId(), e);
+        return ExceptionHandlerDecision.RETRY;
     }
 }

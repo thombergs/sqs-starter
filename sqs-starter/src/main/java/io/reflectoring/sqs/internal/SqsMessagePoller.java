@@ -73,7 +73,15 @@ class SqsMessagePoller<T> {
                     messageHandler.handle(message);
                     acknowledgeMessage(sqsMessage);
                 } catch (Exception e) {
-                    exceptionHandler.handleException(sqsMessage, e);
+                    ExceptionHandler.ExceptionHandlerDecision result = exceptionHandler.handleException(sqsMessage, e);
+                    switch (result) {
+                        case RETRY:
+                            // do nothing ... the message hasn't been deleted from SQS yet, so it will be retried
+                            break;
+                        case DELETE:
+                            acknowledgeMessage(sqsMessage);
+                            break;
+                    }
                 }
                 logger.debug("message {} processed successfully - message has been deleted from SQS", sqsMessage.getMessageId());
             });
