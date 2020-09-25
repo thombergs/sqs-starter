@@ -42,7 +42,7 @@ public class SqsMessagePollerProperties {
     }
 
     /**
-     * The maximum number of messages to pull from SQS with each poll.
+     * The maximum number of messages to pull from SQS with each poll (10 maximum SQS allows is 10).
      */
     public SqsMessagePollerProperties withBatchSize(int batchSize) {
         this.batchSize = batchSize;
