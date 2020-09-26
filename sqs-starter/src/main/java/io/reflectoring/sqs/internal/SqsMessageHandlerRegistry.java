@@ -50,7 +50,7 @@ class SqsMessageHandlerRegistry {
 
     private ScheduledThreadPoolExecutor createPollingThreadPool(SqsMessageHandlerRegistration<?> registration) {
         return ThreadPools.blockingScheduledThreadPool(
-                1,
+                registration.messagePollerProperties().getPollingThreads(),
                 String.format("%s-poller", registration.name()));
     }
 
