@@ -70,8 +70,10 @@ class SqsMessagePoller<T> {
             final T message = objectMapper.readValue(sqsMessage.getBody(), messageHandler.messageType());
             handlerThreadPool.submit(() -> {
                 try {
+                    messageHandler.onBeforeHandle(message);
                     messageHandler.handle(message);
                     acknowledgeMessage(sqsMessage);
+                    logger.debug("message {} processed successfully - message has been deleted from SQS", sqsMessage.getMessageId());
                 } catch (Exception e) {
                     ExceptionHandler.ExceptionHandlerDecision result = exceptionHandler.handleException(sqsMessage, e);
                     switch (result) {
@@ -82,8 +84,10 @@ class SqsMessagePoller<T> {
                             acknowledgeMessage(sqsMessage);
                             break;
                     }
+                } finally {
+                    messageHandler.onAfterHandle(message);
                 }
-                logger.debug("message {} processed successfully - message has been deleted from SQS", sqsMessage.getMessageId());
+
             });
         } catch (JsonProcessingException e) {
             logger.warn("error parsing message {} - deleting message from SQS because it's not recoverable: ", sqsMessage.getMessageId(), e);

@@ -21,7 +21,7 @@ subprojects {
     
     apply plugin: 'com.jfrog.bintray'
 
-    version = '0.0.9-SNAPSHOT'
+    version = '0.0.9'
     sourceCompatibility = '8'
 
     repositories {
