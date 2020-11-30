@@ -1,4 +1,4 @@
-![CI/CD](https://github.com/thombergs/sqs-starter/workflows/CI/CD/badge.svg?branch=master) [![Maven Central](https://maven-badges.herokuapp.com/maven-central/io.reflectoring/sqs-starter/badge.svg)](https://maven-badges.herokuapp.com/maven-central/io.reflectoring/sqs-starter) [![JCenter](https://api.bintray.com/packages/reflectoring/maven-releases/sqs-starter/images/download.svg)](https://bintray.com/reflectoring/maven-releases/sqs-starter/_latestVersion)
+![CI/CD](https://github.com/cargoai/sqs-library/workflows/CI/CD/badge.svg?branch=master)
 
 # sqs-starter
 A Spring Boot starter to send and consume messages to / from an AWS SQS queue in a robust manner.

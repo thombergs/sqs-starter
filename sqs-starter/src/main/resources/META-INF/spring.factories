@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  io.reflectoring.sqs.internal.SqsAutoConfiguration
+  SqsAutoConfiguration

@@ -10,7 +10,7 @@
     <appender-ref ref="STDOUT" />
   </root>
 
-  <logger name="io.reflectoring" level="DEBUG"/>
+  <logger name="co.cargoai" level="DEBUG"/>
 
   <!-- set to DEBUG to show AWS traffic -->
   <logger name="org.apache.http.wire" level="INFO"/>
