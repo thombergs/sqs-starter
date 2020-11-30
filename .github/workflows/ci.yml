@@ -1,13 +1,11 @@
-name: "CI/CD"
+name: "CI"
 
 on:
   pull_request:
     branches: [ master ]
 
 jobs:
-
   # Runs the CI build on all PRs and branches.
-  # Publishes to Bintray on pushes to the "release" branch.
   build:
     runs-on: ubuntu-latest
     steps:
@@ -18,7 +16,7 @@ jobs:
     - name: "Setup Java"
       uses: actions/setup-java@v1
       with:
-        java-version: 13
+        java-version: 15
 
     - name: "Run Gradle build"
       run: chmod 755 gradlew && ./gradlew build -Dci=true
