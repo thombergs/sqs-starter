@@ -1,6 +1,8 @@
 name: "CI/CD"
 
-on: [push]
+on:
+  pull_request:
+    branches: [ master ]
 
 jobs:
 
@@ -25,24 +27,3 @@ jobs:
         # complains if they're not there, so we add dummies to the environment.
         AWS_ACCESS_KEY_ID: ${{ secrets.DUMMY_AWS_ACCESS_KEY_ID }}
         AWS_SECRET_KEY: ${{ secrets.DUMMY_AWS_SECRET_KEY }}
-
-    - name: "Zip build reports"
-      if: failure()
-      run: zip -r reports.zip **/**/build/reports
-
-    - name: "Upload build reports"
-      uses: actions/upload-artifact@v1
-      if: failure()
-      with:
-        name: reports
-        path: reports.zip
-
-    - name: "Publish to Bintray"
-      if: github.ref == 'refs/heads/release'
-      run: |
-        chmod 755 gradlew
-        ./gradlew sqs-starter:bintrayUpload -x test -Dbintray.user=$BINTRAY_USER -Dbintray.key=$BINTRAY_KEY -Dbuild.number=$GITHUB_SHA
-        ./gradlew sqs-starter-test:bintrayUpload -x test -Dbintray.user=$BINTRAY_USER -Dbintray.key=$BINTRAY_KEY -Dbuild.number=$GITHUB_SHA
-      env:
-        BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
-        BINTRAY_KEY: ${{ secrets.BINTRAY_KEY }}
