@@ -4,6 +4,9 @@ import com.amazonaws.services.sqs.model.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * An ExceptionHandler that logs an error with a stack trace every time an SQS message failed to be processed correctly.
+ */
 public class DefaultExceptionHandler implements ExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(DefaultExceptionHandler.class);
