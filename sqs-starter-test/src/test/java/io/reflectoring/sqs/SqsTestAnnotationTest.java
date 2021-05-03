@@ -28,7 +28,7 @@ class SqsTestAnnotationTest {
         SendMessageResult sendMessageResult = sqsClient.sendMessage(new SendMessageRequest(
                 queueUrl,
                 "message"));
-        assertThat(sendMessageResult.getSdkHttpMetadata().getHttpStatusCode()).isEqualTo(200);
+        assertThat(sendMessageResult.getMessageId()).isNotNull();
 
         ReceiveMessageResult receiveMessageResult = sqsClient.receiveMessage(queueUrl);
         assertThat(receiveMessageResult.getSdkHttpMetadata().getHttpStatusCode()).isEqualTo(200);

@@ -80,10 +80,9 @@ public abstract class SqsMessagePublisher<T> {
                     .withMessageBody(objectMapper.writeValueAsString(message));
             SendMessageResult result = sqsClient.sendMessage(request);
 
-            if (result.getSdkHttpMetadata().getHttpStatusCode() != 200) {
-                throw new RuntimeException(String.format("got error response from SQS queue %s: %s",
-                        sqsQueueUrl,
-                        result.getSdkHttpMetadata()));
+            if (result.getMessageId() == null) {
+                throw new RuntimeException(String.format("unable to publish into queue %s",
+                        sqsQueueUrl));
             }
 
         } catch (JsonProcessingException e) {
