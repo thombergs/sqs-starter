@@ -91,6 +91,7 @@ class SqsMessagePoller<T> {
             });
         } catch (JsonProcessingException e) {
             logger.warn("error parsing message {} - deleting message from SQS because it's not recoverable: ", sqsMessage.getMessageId(), e);
+	      acknowledgeMessage(sqsMessage);
         }
     }
 
